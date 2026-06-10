@@ -16,9 +16,9 @@
 
 Em abrigos temporários e casas de acolhimento (como ILPIs), a identificação de urgências médicas é um desafio crítico:
 
-* **Falta de Apoio Técnico:** Cuidadores sem formação médica têm dificuldade em avaliar a gravidade de sintomas.
-* **Abismo Logístico:** Profissionais e clínicas desejam ajudar, mas não possuem um canal organizado para receber pacientes filantrópicos.
-* **Sobrecarga Pública:** Casos simples sobrecarregam unidades de emergência do SUS, enquanto casos graves podem não receber a prioridade adequada.
+- **Falta de Apoio Técnico:** Cuidadores sem formação médica têm dificuldade em avaliar a gravidade de sintomas.
+- **Abismo Logístico:** Profissionais e clínicas desejam ajudar, mas não possuem um canal organizado para receber pacientes filantrópicos.
+- **Sobrecarga Pública:** Casos simples sobrecarregam unidades de emergência do SUS, enquanto casos graves podem não receber a prioridade adequada.
 
 **O Impacto Esperado (Foco em Guarulhos-SP):** Apoiar de 40 a 60 instituições, impactando diretamente **4.000 a 6.000 pessoas vulneráveis**, e evitando até **2.400 idas desnecessárias** ao pronto-socorro através de uma rede ágil de parceiros.
 
@@ -27,14 +27,16 @@ Em abrigos temporários e casas de acolhimento (como ILPIs), a identificação d
 ## 🚀 Funcionalidades Principais
 
 ### 🧑‍⚕️ Portal do Cuidador
-* **Relato de Sintomas Assistido:** Interface intuitiva para descrever o estado do paciente.
-* **Triagem IA em Tempo Real:** Motor de inteligência que analisa o relato e devolve o nível de risco (VERMELHO, AMARELO, VERDE) com diretrizes imediatas.
-* **Encaminhamento Inteligente:** Listagem dinâmica de clínicas parceiras que possuem leitos disponíveis no momento exato da emergência.
+
+- **Relato de Sintomas Assistido:** Interface intuitiva para descrever o estado do paciente.
+- **Triagem IA em Tempo Real:** Motor de inteligência que analisa o relato e devolve o nível de risco (VERMELHO, AMARELO, VERDE) com diretrizes imediatas.
+- **Encaminhamento Inteligente:** Listagem dinâmica de clínicas parceiras que possuem leitos disponíveis no momento exato da emergência.
 
 ### 🏥 Portal do Parceiro (Clínica/Médico)
-* **Gestão de Capacidade:** Atualização em tempo real de leitos de UTI, Enfermaria e Médicos de Plantão.
-* **Painel de Emergências:** Fila de atendimento ao vivo alimentada por *Polling* reativo.
-* **Prontuário Integrado:** Visualização detalhada dos sinais vitais, comorbidades e análise preliminar da IA antes da admissão ou transferência do paciente.
+
+- **Gestão de Capacidade:** Atualização em tempo real de leitos de UTI, Enfermaria e Médicos de Plantão.
+- **Painel de Emergências:** Fila de atendimento ao vivo alimentada por *Polling* reativo.
+- **Prontuário Integrado:** Visualização detalhada dos sinais vitais, comorbidades e análise preliminar da IA antes da admissão ou transferência do paciente.
 
 ---
 
@@ -63,6 +65,9 @@ graph TB
     D --> DB2[(MySQL: Atendimentos)]
     E --> DB3[(MySQL: Parceiros)]
     G --> DB4[(MySQL: IA)]
+```
+
+---
 
 ## 📂 Estrutura do Monorepo
 
