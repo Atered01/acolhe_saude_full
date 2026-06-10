@@ -1,0 +1,48 @@
+@if (open) {
+  <div class="fixed inset-0 z-40" (click)="onClose()"></div>
+
+  <div class="absolute right-0 top-12 z-50 w-[360px] rounded-2xl bg-white shadow-2xl ring-1 ring-slate-200 overflow-hidden animate-in fade-in slide-in-from-top-2">
+    
+    <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <lucide-icon [img]="BellIcon" class="w-4 h-4 text-slate-700"></lucide-icon>
+        <h3 class="font-semibold text-slate-900 text-sm">Notificações</h3>
+        <span class="text-xs font-semibold bg-red-100 text-red-600 px-2 py-0.5 rounded-full">2 novas</span>
+      </div>
+      <button (click)="onClose()" class="text-slate-400 hover:text-slate-700 transition cursor-pointer">
+        <lucide-icon [img]="XIcon" class="w-4 h-4"></lucide-icon>
+      </button>
+    </div>
+
+    <div class="max-h-[380px] overflow-y-auto divide-y divide-slate-100">
+      @for (n of items; track n.title) {
+        <div 
+          class="px-5 py-4 flex gap-3 hover:bg-slate-50 transition"
+          [class.bg-blue-50]="n.unread"
+          [class.bg-opacity-40]="n.unread"
+        >
+          <div class="w-9 h-9 rounded-xl shrink-0 flex items-center justify-center {{ n.tone }}">
+            <lucide-icon [img]="n.icon" class="w-4 h-4"></lucide-icon>
+          </div>
+          
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <p class="text-sm font-semibold text-slate-900 truncate">{{ n.title }}</p>
+              @if (n.unread) {
+                <span class="w-2 h-2 bg-blue-600 rounded-full shrink-0"></span>
+              }
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5 line-clamp-2">{{ n.desc }}</p>
+            <p class="text-[11px] text-slate-400 mt-1">{{ n.time }}</p>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="p-3 border-t border-slate-100 bg-slate-50">
+      <button class="w-full flex items-center justify-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 py-2 rounded-lg hover:bg-white transition cursor-pointer">
+        <lucide-icon [img]="CheckCheckIcon" class="w-4 h-4"></lucide-icon> Marcar todas como lidas
+      </button>
+    </div>
+  </div>
+}

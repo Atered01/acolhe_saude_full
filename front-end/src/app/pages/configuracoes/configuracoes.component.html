@@ -1,0 +1,74 @@
+<div class="min-h-screen bg-slate-50 p-4 md:p-8">
+  <header class="mb-8">
+    <h1 class="text-2xl font-bold text-slate-900">Capacidade da Clínica</h1>
+    <p class="text-slate-500">Ajuste recursos disponíveis em tempo real</p>
+  </header>
+
+  <div class="max-w-3xl space-y-6">
+
+    <!-- Toggle de Aceitação -->
+    <div class="bg-white rounded-2xl shadow-md p-6 flex items-center justify-between">
+      <div>
+        <h3 class="font-semibold text-slate-900">Receber Emergências</h3>
+        <p class="text-sm text-slate-500 mt-1">
+          {{ accept ? "Sua clínica está aceitando novos pacientes." : "Recebimento pausado temporariamente." }}
+        </p>
+      </div>
+      <!-- O botão inteligente -->
+      <button (click)="toggleAccept()" [class.bg-emerald-500]="accept" [class.bg-slate-300]="!accept"
+        class="relative w-16 h-9 rounded-full transition cursor-pointer">
+        <span [class.translate-x-7]="accept"
+          class="absolute top-1 left-1 w-7 h-7 bg-white rounded-full shadow transition-transform"></span>
+      </button>
+    </div>
+
+    <!-- Lista de Contadores (UTI, Enfermaria, Médicos) -->
+    @for (c of counters; track c.id) {
+    <div class="bg-white rounded-2xl shadow-md p-6">
+      <div class="flex items-center gap-4 mb-4">
+
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center {{ c.tone }}">
+          <lucide-icon [img]="c.icon" class="w-6 h-6"></lucide-icon>
+        </div>
+
+        <div class="flex-1">
+          <h3 class="font-semibold text-slate-900">{{ c.label }}</h3>
+          <p class="text-xs text-slate-500">{{ getPct(c) }}% da capacidade máxima ({{ c.max }})</p>
+        </div>
+
+        <!-- Botões + e - -->
+        <div class="flex items-center gap-3 bg-slate-100 rounded-xl p-1">
+          <button (click)="updateCounter(c, -1)"
+            class="w-10 h-10 rounded-lg bg-white shadow-sm hover:bg-slate-50 flex items-center justify-center cursor-pointer transition">
+            <lucide-icon [img]="MinusIcon" class="w-4 h-4"></lucide-icon>
+          </button>
+
+          <span class="text-xl font-bold w-10 text-center text-slate-900">{{ c.value }}</span>
+
+          <button (click)="updateCounter(c, 1)"
+            class="w-10 h-10 rounded-lg bg-white shadow-sm hover:bg-slate-50 flex items-center justify-center cursor-pointer transition">
+            <lucide-icon [img]="PlusIcon" class="w-4 h-4"></lucide-icon>
+          </button>
+        </div>
+      </div>
+
+      <!-- Slider Range com Two-Way Binding (ngModel) -->
+      <input type="range" min="0" [max]="c.max" [(ngModel)]="c.value" class="w-full accent-blue-600 cursor-pointer" />
+    </div>
+    }
+
+    <!-- Botão de Salvar -->
+    <div class="flex justify-end pt-4">
+      <button (click)="salvar()" [disabled]="isSalvando"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-xl shadow-md shadow-blue-600/20 transition inline-flex items-center gap-2 cursor-pointer disabled:opacity-75 disabled:cursor-wait">
+        @if (isSalvando) {
+        <lucide-icon [img]="Loader2Icon" class="w-5 h-5 animate-spin"></lucide-icon>
+        A Guardar...
+        } @else {
+        Salvar Configurações
+        }
+      </button>
+    </div>
+
+  </div>
+</div>

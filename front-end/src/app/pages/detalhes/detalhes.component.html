@@ -1,0 +1,133 @@
+<div class="min-h-screen bg-slate-50 p-4 md:p-8">
+  <header class="mb-8">
+    <h1 class="text-2xl font-bold text-slate-900">Detalhes do Caso</h1>
+    <p class="text-slate-500">
+      {{ atendimento?.nomePaciente || 'Carregando...' }} · Registro #{{ atendimento?.idAtendimento }}
+    </p>
+  </header>
+
+  <div class="grid lg:grid-cols-2 gap-6">
+
+    <div class="space-y-6">
+
+      <div class="bg-white rounded-2xl shadow-md p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <lucide-icon [img]="FileTextIcon" class="w-5 h-5 text-blue-600"></lucide-icon>
+          <h3 class="font-semibold text-slate-900">Histórico do Paciente</h3>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 mb-5">
+          @for (sinal of sinaisVitais; track sinal.label) {
+          <div class="bg-slate-50 rounded-xl p-3">
+            <div class="flex items-center gap-1.5 text-xs text-slate-500">
+              <lucide-icon [img]="sinal.icon" class="w-4 h-4 {{ sinal.iconColor }}"></lucide-icon>
+              {{ sinal.label }}
+            </div>
+            <div class="text-lg font-bold text-slate-900 mt-1">{{ sinal.value }}</div>
+          </div>
+          }
+        </div>
+
+        <h4 class="text-sm font-semibold text-slate-900 mb-2">Comorbidades Cadastradas</h4>
+        <div class="flex flex-wrap gap-2 mb-5">
+          @for (c of comorbidades; track c) {
+          <span class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-medium">
+            {{ c }}
+          </span>
+          }
+        </div>
+
+        <h4 class="text-sm font-semibold text-slate-900 mb-2">Medicações de Uso Contínuo</h4>
+        <ul class="text-sm text-slate-700 space-y-1">
+          @for (m of medicacoes; track m) {
+          <li>• {{ m }}</li>
+          }
+        </ul>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-md p-6">
+        <h3 class="font-semibold text-slate-900 mb-2">Relato do Cuidador no Abrigo</h3>
+        <p class="text-sm text-slate-500 mb-3">Postado via plataforma de Monitoramento</p>
+        <p
+          class="text-slate-700 leading-relaxed italic border-l-4 border-blue-500 pl-4 bg-slate-50 py-3 pr-3 rounded-r-xl">
+          "{{ atendimento?.relatoSintomas || 'Nenhum sintoma adicional anexado.' }}"
+        </p>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+
+      <div class="rounded-2xl p-[2px] bg-gradient-to-br shadow-xl transition-all duration-500"
+        [ngClass]="getThemeClass()">
+        <div class="bg-white rounded-2xl p-6">
+          <div class="flex items-center gap-2 mb-4">
+            <lucide-icon [img]="SparklesIcon" class="w-5 h-5 text-blue-600"></lucide-icon>
+            <h3 class="font-semibold text-slate-900">Análise de Triagem IA</h3>
+            <span class="ml-auto px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider"
+              [ngClass]="getBadgeClass()">
+              Risco {{ atendimento?.nivelRiscoIa }}
+            </span>
+          </div>
+
+          <p class="text-slate-700 leading-relaxed">
+            O motor de inteligência classificou este quadro como <strong class="lowercase">{{ atendimento?.nivelRiscoIa
+              }}</strong>.
+            Avalie o relato clínico ao lado e verifique a disponibilidade de leitos operacionais antes de confirmar o
+            recebimento.
+          </p>
+
+          <h4 class="text-sm font-semibold text-slate-900 mt-5 mb-2 flex items-center gap-2">
+            <lucide-icon [img]="AlertTriangleIcon" class="w-4 h-4 text-amber-500"></lucide-icon> Riscos de Atenção
+          </h4>
+          <ul class="space-y-2 text-sm text-slate-700">
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full"
+                [ngClass]="atendimento?.nivelRiscoIa === 'VERMELHO' ? 'bg-red-500' : 'bg-amber-500'"></span>
+              Agravamento súbito dos sintomas relatados
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full"
+                [ngClass]="atendimento?.nivelRiscoIa === 'VERMELHO' ? 'bg-red-500' : 'bg-amber-500'"></span>
+              Necessidade de suporte de oxigênio ou monitorização contínua
+            </li>
+          </ul>
+
+          <h4 class="text-sm font-semibold text-slate-900 mt-5 mb-2 flex items-center gap-2">
+            <lucide-icon [img]="CheckCircle2Icon" class="w-4 h-4 text-emerald-500"></lucide-icon> Protocolo Inicial
+            Sugerido
+          </h4>
+          <div class="flex flex-wrap gap-2">
+            @for (e of exames; track e) {
+            <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-medium">
+              {{ e }}
+            </span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Botões de Decisão Hospitalar -->
+      <div class="grid grid-cols-2 gap-3">
+        <!-- 🚨 Retiramos a trava rigorosa de status -->
+        <button (click)="modalAceiteAberto = true" [disabled]="!atendimento || isLoading"
+          class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-4 rounded-2xl shadow-md shadow-emerald-500/20 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+          Aceitar Emergência
+        </button>
+
+        <button (click)="modalTransferenciaAberto = true" [disabled]="!atendimento || isLoading"
+          class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold py-4 rounded-2xl transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+          Transferir Caso
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<app-accept-case-modal [open]="modalAceiteAberto" [patientName]="atendimento?.nomePaciente || 'Paciente'"
+  (fechar)="modalAceiteAberto = false" (confirmar)="confirmarAceite()">
+</app-accept-case-modal>
+
+<app-transfer-case-modal [open]="modalTransferenciaAberto" [idAtendimento]="idAtendimento || 0"
+  (fechar)="modalTransferenciaAberto = false" (sucesso)="confirmarTransferencia()">
+</app-transfer-case-modal>

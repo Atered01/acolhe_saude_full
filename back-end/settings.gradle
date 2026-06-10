@@ -1,0 +1,6 @@
+rootProject.name = 'acolhe-saude'
+
+include 'atendimento-service'
+include 'parceiro-service'
+include 'inteligencia-service'
+include 'auth-service'

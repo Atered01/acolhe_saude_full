@@ -1,0 +1,123 @@
+<app-drawer
+  [open]="open"
+  (fechar)="onClose()"
+  title="Cadastrar Novo Parceiro"
+  subtitle="Adicione uma nova clínica à rede"
+  [hasFooter]="true"
+>
+  <!-- Alerta / Banner de Informação -->
+  <div class="flex items-center gap-3 p-4 rounded-2xl bg-blue-50 border border-blue-100 mb-5">
+    <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0">
+      <lucide-icon [img]="Building2Icon" class="w-5 h-5"></lucide-icon>
+    </div>
+    <p class="text-sm text-blue-900 leading-tight">As informações serão validadas antes da ativação.</p>
+  </div>
+
+  <!-- Formulário -->
+  <form class="space-y-4" (ngSubmit)="onSalvar()">
+    
+    <!-- Nome da Clínica -->
+    <div>
+      <label class="text-xs font-semibold text-slate-700 uppercase tracking-wide">Nome da Clínica</label>
+      <input 
+        type="text" 
+        name="nome" 
+        [(ngModel)]="formData.nome" 
+        placeholder="Hospital Santa Helena" 
+        class="mt-1.5 w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-transparent focus:bg-white focus:border-blue-600 outline-none text-sm transition" 
+      />
+    </div>
+    
+    <!-- CNPJ -->
+    <div>
+      <label class="text-xs font-semibold text-slate-700 uppercase tracking-wide">CNPJ</label>
+      <input 
+        type="text" 
+        name="cnpj" 
+        [(ngModel)]="formData.cnpj" 
+        placeholder="00.000.000/0001-00" 
+        class="mt-1.5 w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-transparent focus:bg-white focus:border-blue-600 outline-none text-sm transition" 
+      />
+    </div>
+
+    <!-- Especialidade -->
+    <div>
+      <label class="text-xs font-semibold text-slate-700 uppercase tracking-wide">Especialidade Principal</label>
+      <input 
+        type="text" 
+        name="especialidade" 
+        [(ngModel)]="formData.especialidade" 
+        placeholder="Cardiologia, Geriatria..." 
+        class="mt-1.5 w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-transparent focus:bg-white focus:border-blue-600 outline-none text-sm transition" 
+      />
+    </div>
+
+    <!-- Grid: Cidade e UF -->
+    <div class="grid grid-cols-2 gap-3">
+      <div>
+        <label class="text-xs font-semibold text-slate-700 uppercase tracking-wide">Cidade</label>
+        <input 
+          type="text" 
+          name="cidade" 
+          [(ngModel)]="formData.cidade" 
+          placeholder="São Paulo" 
+          class="mt-1.5 w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-transparent focus:bg-white focus:border-blue-600 outline-none text-sm transition" 
+        />
+      </div>
+      <div>
+        <label class="text-xs font-semibold text-slate-700 uppercase tracking-wide">UF</label>
+        <input 
+          type="text" 
+          name="uf" 
+          [(ngModel)]="formData.uf" 
+          placeholder="SP" 
+          class="mt-1.5 w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-transparent focus:bg-white focus:border-blue-600 outline-none text-sm transition" 
+        />
+      </div>
+    </div>
+
+    <!-- E-mail -->
+    <div>
+      <label class="text-xs font-semibold text-slate-700 uppercase tracking-wide">E-mail de Contato</label>
+      <input 
+        type="email" 
+        name="email" 
+        [(ngModel)]="formData.email" 
+        placeholder="contato@clinica.com" 
+        class="mt-1.5 w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-transparent focus:bg-white focus:border-blue-600 outline-none text-sm transition" 
+      />
+    </div>
+
+    <!-- Telefone -->
+    <div>
+      <label class="text-xs font-semibold text-slate-700 uppercase tracking-wide">Telefone</label>
+      <input 
+        type="text" 
+        name="telefone" 
+        [(ngModel)]="formData.telefone" 
+        placeholder="(11) 99999-0000" 
+        class="mt-1.5 w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-transparent focus:bg-white focus:border-blue-600 outline-none text-sm transition" 
+      />
+    </div>
+
+  </form>
+
+  <!-- Botões do Rodapé (Renderizados no slot [drawer-footer]) -->
+  <button 
+    drawer-footer 
+    (click)="onClose()" 
+    class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 transition cursor-pointer"
+  >
+    Cancelar
+  </button>
+  
+  <button 
+    drawer-footer 
+    (click)="onSalvar()" 
+    [disabled]="!formData.nome || !formData.cnpj"
+    class="px-5 py-2 rounded-xl text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/20 transition cursor-pointer disabled:opacity-50"
+  >
+    Cadastrar Parceiro
+  </button>
+
+</app-drawer>

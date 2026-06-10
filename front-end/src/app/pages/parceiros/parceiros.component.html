@@ -1,0 +1,96 @@
+<div class="min-h-screen bg-slate-50 p-4 md:p-8">
+  <header class="mb-8">
+    <h1 class="text-2xl font-bold text-slate-900">Gestão de Parceiros</h1>
+    <p class="text-slate-500">Visão geral das clínicas conectadas</p>
+  </header>
+
+  <!-- KPIs de Resumo -->
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    @for (kpi of kpis; track kpi.label) {
+    <div class="bg-white rounded-2xl shadow-md p-5">
+      <div class="w-10 h-10 rounded-xl flex items-center justify-center {{ kpi.tone }}">
+        <lucide-icon [img]="kpi.icon" class="w-5 h-5"></lucide-icon>
+      </div>
+      <div class="text-xs text-slate-500 mt-3 font-medium uppercase tracking-wide">{{ kpi.label }}</div>
+      <div class="text-3xl font-bold text-slate-900 mt-1">{{ kpi.value }}</div>
+    </div>
+    }
+  </div>
+
+  <!-- Tabela de Parceiros -->
+  <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+
+    <!-- Cabeçalho da Tabela -->
+    <div class="p-5 flex items-center justify-between border-b border-slate-100">
+      <h3 class="font-semibold text-slate-900">Clínicas parceiras</h3>
+      <button (click)="drawerNovoParceiroAberto = true"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-xl shadow-md shadow-blue-600/20 inline-flex items-center gap-2 text-sm transition cursor-pointer">
+        <lucide-icon [img]="PlusIcon" class="w-4 h-4"></lucide-icon> Adicionar Parceiro
+      </button>
+    </div>
+  </div>
+
+  <!-- Corpo da Tabela -->
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead class="bg-slate-50 text-slate-500 uppercase text-xs">
+        <tr>
+          <th class="text-left px-6 py-3 font-semibold">Nome</th>
+          <th class="text-left px-6 py-3 font-semibold">Especialização</th>
+          <th class="text-left px-6 py-3 font-semibold">Cidade</th>
+          <th class="text-left px-6 py-3 font-semibold">Status</th>
+          <th class="px-6 py-3"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+
+        @for (c of clinicas; track c.idParceiro) {
+        <tr class="hover:bg-slate-50 transition border-b border-slate-50 last:border-0">
+
+          <td class="px-6 py-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+                <lucide-icon [img]="Building2Icon" class="w-5 h-5"></lucide-icon>
+              </div>
+              <div>
+                <div class="font-semibold text-slate-900">{{ c.nomeApresentacao }}</div>
+                <div class="text-sm text-slate-500">CNPJ: {{ c.documento }}</div>
+              </div>
+            </div>
+          </td>
+
+          <td class="px-6 py-4 text-sm text-slate-600">{{ c.tipoParceiro }}</td>
+          <td class="px-6 py-4 text-sm text-slate-600">{{ c.enderecoAtendimento }}</td>
+
+          <td class="px-6 py-4">
+            @if (c.aceitandoEmergencias && (c.leitosUti + c.leitosEnfermaria) > 0) {
+            <span
+              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">
+              <lucide-icon [img]="CheckCircle2Icon" class="w-3.5 h-3.5"></lucide-icon>
+              {{ c.leitosUti + c.leitosEnfermaria }} Vagas
+            </span>
+            } @else {
+            <span
+              class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
+              <lucide-icon [img]="AlertCircleIcon" class="w-3.5 h-3.5"></lucide-icon>
+              Sem Vagas
+            </span>
+            }
+          </td>
+
+          <td class="px-6 py-4 text-right">
+            <app-partner-actions-menu [parceiro]="c" (editar)="editarParceiro($event)"
+              (verHistorico)="verHistoricoParceiro($event)"
+              (suspender)="suspenderParceiro($event)"></app-partner-actions-menu>
+          </td>
+
+        </tr>
+        }
+
+      </tbody>
+    </table>
+  </div>
+</div>
+<app-new-partner-drawer [open]="drawerNovoParceiroAberto" (fechar)="drawerNovoParceiroAberto = false"
+  (salvar)="salvarNovoParceiro($event)">
+</app-new-partner-drawer>

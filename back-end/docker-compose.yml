@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-acolhe-saude
+    ports:
+      - "5672:5672"   # Porta onde o Java vai mandar as mensagens
+      - "15672:15672" # Porta do painel visual do RabbitMQ no navegador
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=123456
+    restart: unless-stopped

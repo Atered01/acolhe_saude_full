@@ -1,0 +1,112 @@
+<div class="min-h-screen bg-slate-50 p-4 md:p-8">
+
+  <header class="mb-8">
+    <h1 class="text-2xl font-bold text-slate-900">Painel de Emergências 🏥</h1>
+    <p class="text-sm text-slate-500 mt-1">Casos críticos direcionados à sua unidade que aguardam triagem médica médica.
+    </p>
+  </header>
+
+  <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-slate-100">
+    <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+      <h3 class="font-semibold text-slate-900 flex items-center gap-2">
+        <lucide-icon [img]="ShieldAlertIcon" class="w-5 h-5 text-red-500 animate-pulse"></lucide-icon>
+        Fila de Atendimento Crítico
+      </h3>
+      <span class="px-2.5 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold">
+        {{ emergencias.length }} pendentes
+      </span>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr
+            class="border-b border-slate-100 text-slate-400 text-xs font-semibold uppercase tracking-wider bg-slate-50/30">
+            <th class="px-6 py-4">Paciente / Sintomas</th>
+            <th class="px-6 py-4">Gravidade (IA)</th>
+            <th class="px-6 py-4">Status Atual</th>
+            <th class="px-6 py-4">Horário</th>
+            <th class="px-6 py-4 text-right">Ações</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+
+          @for (e of emergencias; track e.idAtendimento) {
+          <tr class="hover:bg-slate-50/80 transition">
+            <td class="px-6 py-4 max-w-md">
+              <div class="font-semibold text-slate-900">{{ e.nomePaciente }}</div>
+              <div class="text-sm text-slate-500 truncate mt-0.5" [title]="e.relatoSintomas">
+                {{ e.relatoSintomas }}
+              </div>
+            </td>
+
+            <td class="px-6 py-4">
+              <span class="px-3 py-1 rounded-full text-xs font-bold uppercase inline-flex items-center gap-1"
+                [ngClass]="getBadgeColor(e.nivelRiscoIa)">
+                <lucide-icon [img]="AlertTriangleIcon" class="w-3 h-3"></lucide-icon>
+                {{ e.nivelRiscoIa }}
+              </span>
+            </td>
+
+            <td class="px-6 py-4">
+              <span class="text-sm font-medium text-slate-600 flex items-center gap-1.5">
+                <div class="w-2 h-2 rounded-full"
+                  [ngClass]="e.statusAtendimento === 'TRANSFERIDO' ? 'bg-purple-500' : 'bg-blue-500'"></div>
+                {{ e.statusAtendimento === 'TRANSFERIDO' ? 'Transferência' : 'Aguardando Aceite' }}
+              </span>
+            </td>
+
+            <td class="px-6 py-4 text-sm text-slate-400">
+              <span class="inline-flex items-center gap-1">
+                <lucide-icon [img]="ClockIcon" class="w-3.5 h-3.5"></lucide-icon>
+                {{ e.dataRegistro }}
+              </span>
+            </td>
+
+            <td class="px-6 py-4 text-right">
+              <div class="flex items-center justify-end gap-2">
+
+                <button [routerLink]="['/clinica/detalhes', e.idAtendimento]"
+                  class="px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-xl transition inline-flex items-center gap-1.5 cursor-pointer">
+                  <lucide-icon [img]="EyeIcon" class="w-4 h-4"></lucide-icon>
+                  Ver Detalhes
+                </button>
+
+                <button (click)="abrirTransferir(e)"
+                  class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-purple-700 hover:bg-purple-50 rounded-xl transition inline-flex items-center gap-1.5 cursor-pointer">
+                  <lucide-icon [img]="ArrowRightLeftIcon" class="w-4 h-4"></lucide-icon>
+                  Transferir
+                </button>
+
+                <button (click)="abrirAceitar(e)"
+                  class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm transition inline-flex items-center gap-1.5 cursor-pointer">
+                  <lucide-icon [img]="CheckCircleIcon" class="w-4 h-4"></lucide-icon>
+                  Admitir
+                </button>
+
+              </div>
+            </td>
+          </tr>
+          }
+
+          @if (emergencias.length === 0) {
+          <tr>
+            <td colspan="5" class="text-center py-10 text-slate-500 text-sm">
+              Excelente! Nenhum caso de emergência pendente na fila no momento.
+            </td>
+          </tr>
+          }
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<app-accept-case-modal [open]="modalAceitarAberto" [caseData]="casoSelecionado" (fechar)="modalAceitarAberto = false"
+  (sucesso)="carregarEmergencias()">
+</app-accept-case-modal>
+
+<app-transfer-case-modal [open]="modalTransferirAberto" [caseData]="casoSelecionado"
+  (fechar)="modalTransferirAberto = false" (sucesso)="carregarEmergencias()">
+</app-transfer-case-modal>

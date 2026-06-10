@@ -1,0 +1,62 @@
+<app-drawer
+  [open]="open"
+  (fechar)="onClose()"
+  title="Dr. Ricardo Lima"
+  subtitle="Cardiologista • Online"
+>
+  <div class="-mx-6 -my-5 h-full flex flex-col bg-slate-50 min-h-[calc(100vh-80px)]">
+    
+    <div class="px-6 py-3 bg-white border-b border-slate-100 flex items-center justify-end gap-2">
+      <button class="w-9 h-9 rounded-lg hover:bg-slate-100 flex items-center justify-center text-emerald-600 transition cursor-pointer">
+        <lucide-icon [img]="PhoneIcon" class="w-4 h-4"></lucide-icon>
+      </button>
+      <button class="w-9 h-9 rounded-lg hover:bg-slate-100 flex items-center justify-center text-blue-600 transition cursor-pointer">
+        <lucide-icon [img]="VideoIcon" class="w-4 h-4"></lucide-icon>
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-6 py-5 space-y-3">
+      @for (m of mensagens; track $index) {
+        <div class="flex" [ngClass]="m.from === 'me' ? 'justify-end' : 'justify-start'">
+          
+          <div
+            class="max-w-[75%] px-4 py-2.5 rounded-2xl text-sm shadow-sm"
+            [ngClass]="m.from === 'me' 
+              ? 'bg-blue-600 text-white rounded-br-md' 
+              : 'bg-white text-slate-800 rounded-bl-md ring-1 ring-slate-100'"
+          >
+            <p class="leading-relaxed">{{ m.text }}</p>
+            <p 
+              class="text-[10px] mt-1"
+              [ngClass]="m.from === 'me' ? 'text-blue-100' : 'text-slate-400'"
+            >
+              {{ m.time }}
+            </p>
+          </div>
+
+        </div>
+      }
+    </div>
+
+    <div class="p-3 bg-white border-t border-slate-100 flex items-center gap-2">
+      <button class="w-10 h-10 rounded-xl hover:bg-slate-100 flex items-center justify-center text-slate-500 shrink-0 transition cursor-pointer">
+        <lucide-icon [img]="PaperclipIcon" class="w-4 h-4"></lucide-icon>
+      </button>
+      
+      <input
+        [(ngModel)]="novaMensagem"
+        (keyup.enter)="enviarMensagem()"
+        placeholder="Escreva uma mensagem..."
+        class="flex-1 px-4 py-2.5 rounded-xl bg-slate-100 border border-transparent focus:bg-white focus:border-blue-600 outline-none text-sm transition"
+      />
+      
+      <button
+        (click)="enviarMensagem()"
+        class="w-10 h-10 rounded-xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shrink-0 shadow-md shadow-blue-600/20 transition cursor-pointer"
+      >
+        <lucide-icon [img]="SendIcon" class="w-4 h-4 -ml-0.5 mt-0.5"></lucide-icon>
+      </button>
+    </div>
+    
+  </div>
+</app-drawer>

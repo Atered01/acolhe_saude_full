@@ -1,0 +1,76 @@
+<div class="min-h-screen grid lg:grid-cols-2 bg-slate-50">
+  <div
+    class="hidden lg:flex relative bg-gradient-to-br from-blue-600 via-blue-500 to-emerald-500 p-12 flex-col justify-between text-white overflow-hidden">
+    <div class="flex items-center gap-2">
+      <div class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center">
+        <lucide-icon [img]="HeartIcon" class="w-6 h-6"></lucide-icon>
+      </div>
+      <span class="text-xl font-semibold tracking-tight">Acolhe Saúde</span>
+    </div>
+
+    <div class="relative z-10">
+      <h1 class="text-5xl font-bold leading-tight">Cuidar é um ato de amor.</h1>
+      <p class="mt-4 text-lg text-white/90 max-w-md">
+        Triagem inteligente com IA para apoiar cuidadores e conectar idosos às melhores clínicas parceiras.
+      </p>
+
+      <div class="mt-10 grid grid-cols-3 gap-4 max-w-md">
+        @for (feature of features; track feature.label) {
+        <div class="bg-white/10 backdrop-blur rounded-xl p-3 flex flex-col items-center gap-1 text-center">
+          <lucide-icon [img]="feature.icon" class="w-5 h-5"></lucide-icon>
+          <span class="text-xs font-medium">{{ feature.label }}</span>
+        </div>
+        }
+      </div>
+    </div>
+
+    <p class="text-white/70 text-sm">© 2026 Acolhe Saúde · Todos os direitos reservados</p>
+
+    <div class="absolute -top-32 -right-32 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-32 -left-20 w-96 h-96 bg-emerald-300/30 rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="flex items-center justify-center p-8">
+    <div class="w-full max-w-md">
+      <div class="lg:hidden flex items-center gap-2 mb-8">
+        <div class="w-10 h-10 rounded-2xl bg-blue-600 flex items-center justify-center text-white">
+          <lucide-icon [img]="HeartIcon" class="w-6 h-6"></lucide-icon>
+        </div>
+        <span class="text-xl font-semibold">Acolhe Saúde</span>
+      </div>
+
+      <h2 class="text-3xl font-bold text-slate-900">Bem-vindo de volta</h2>
+      <p class="mt-2 text-slate-600">Entre para acompanhar seus pacientes.</p>
+
+      <form (ngSubmit)="fazerLogin()" class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">E-mail corporativo</label>
+          <div class="relative">
+            <lucide-icon [img]="MailIcon"
+              class="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"></lucide-icon>
+            <input type="email" name="email" [(ngModel)]="email" placeholder="nome@clinica.com"
+              class="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition" />
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label class="block text-sm font-medium text-slate-700">Palavra-passe</label>
+            <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-700">Esqueceu?</a>
+          </div>
+          <div class="relative">
+            <lucide-icon [img]="LockIcon"
+              class="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"></lucide-icon>
+            <input type="password" name="password" [(ngModel)]="password" placeholder="••••••••"
+              class="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition" />
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="isLoading"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 rounded-xl shadow-md shadow-blue-600/20 transition disabled:opacity-70">
+          {{ isLoading ? 'A verificar...' : 'Entrar na plataforma' }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

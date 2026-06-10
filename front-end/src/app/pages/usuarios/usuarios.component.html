@@ -1,0 +1,54 @@
+<div class="min-h-screen bg-slate-50 p-4 md:p-8">
+  <header class="mb-8">
+    <h1 class="text-2xl font-bold text-slate-900">Usuários do Sistema</h1>
+    <p class="text-slate-500">Gerencie cuidadores, médicos e administradores</p>
+  </header>
+
+  <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+
+    <div class="p-5 flex flex-col sm:flex-row gap-3 sm:items-center justify-between border-b border-slate-100">
+
+      <div class="relative flex-1 max-w-sm">
+        <lucide-icon [img]="SearchIcon"
+          class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></lucide-icon>
+        <input placeholder="Buscar usuário..."
+          class="pl-9 pr-4 py-2 w-full rounded-xl bg-slate-100 border border-transparent focus:bg-white focus:border-blue-600 outline-none text-sm transition" />
+      </div>
+
+      <button
+        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-xl shadow-md shadow-blue-600/20 inline-flex items-center gap-2 text-sm transition cursor-pointer">
+        <lucide-icon [img]="PlusIcon" class="w-4 h-4"></lucide-icon> Novo Usuário
+      </button>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-50 text-slate-500 uppercase text-xs">
+          <tr>
+            <th class="text-left px-6 py-3 font-semibold">Nome</th>
+            <th class="text-left px-6 py-3 font-semibold">E-mail</th>
+            <th class="text-left px-6 py-3 font-semibold">Cargo</th>
+            <th class="text-right px-6 py-3 font-semibold">Ações</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+
+          @for (u of users; track u.idUsuario) {
+          <tr>
+            <td class="px-6 py-4">
+              <div class="font-semibold text-slate-900">{{ u.nomeCompleto }}</div>
+              <div class="text-sm text-slate-500">{{ u.email }}</div>
+            </td>
+            <td class="px-6 py-4">
+              <span class="px-2.5 py-1 rounded-full text-xs font-semibold" [ngClass]="getBadgeColor(u.cargo)">
+                {{ formatarCargo(u.cargo) }}
+              </span>
+            </td>
+          </tr>
+          }
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

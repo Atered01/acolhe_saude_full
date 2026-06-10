@@ -1,0 +1,51 @@
+<app-drawer [open]="open" (fechar)="onClose()" title="Cadastrar Novo Usuário" subtitle="Crie um acesso ao sistema"
+    [hasFooter]="true">
+    <div class="flex items-center gap-3 p-4 rounded-2xl bg-emerald-50 border border-emerald-100 mb-5">
+        <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0">
+            <lucide-icon [img]="UserPlusIcon" class="w-5 h-5"></lucide-icon>
+        </div>
+        <p class="text-sm text-emerald-900 leading-tight">Uma senha provisória será enviada por e-mail.</p>
+    </div>
+
+    <form class="space-y-4" (ngSubmit)="onSalvar()">
+
+        <div>
+            <label class="text-xs font-semibold text-slate-700 uppercase tracking-wide">Nome completo</label>
+            <input type="text" name="nome" [(ngModel)]="formData.nome" placeholder="Ex.: Maria Aparecida Silva"
+                class="mt-1.5 w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-transparent focus:bg-white focus:border-blue-600 outline-none text-sm transition" />
+        </div>
+
+        <div>
+            <label class="text-xs font-semibold text-slate-700 uppercase tracking-wide">E-mail</label>
+            <input type="email" name="email" [(ngModel)]="formData.email" placeholder="usuario@email.com"
+                class="mt-1.5 w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-transparent focus:bg-white focus:border-blue-600 outline-none text-sm transition" />
+        </div>
+
+        <div>
+            <label class="text-xs font-semibold text-slate-700 uppercase tracking-wide">Senha provisória</label>
+            <input type="password" name="senha" [(ngModel)]="formData.senha" placeholder="••••••••"
+                class="mt-1.5 w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-transparent focus:bg-white focus:border-blue-600 outline-none text-sm transition" />
+        </div>
+
+        <div>
+            <label class="text-xs font-semibold text-slate-700 uppercase tracking-wide">Cargo</label>
+            <select name="cargo" [(ngModel)]="formData.cargo"
+                class="mt-1.5 w-full px-4 py-2.5 rounded-xl bg-slate-100 border border-transparent focus:bg-white focus:border-blue-600 outline-none text-sm transition cursor-pointer">
+                @for (c of cargos; track c) {
+                <option [value]="c">{{ c }}</option>
+                }
+            </select>
+        </div>
+
+    </form>
+
+    <button drawer-footer (click)="onClose()"
+        class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 transition cursor-pointer">
+        Cancelar
+    </button>
+
+    <button drawer-footer (click)="onSalvar()" [disabled]="!formData.nome || !formData.email || !formData.senha"
+        class="px-5 py-2 rounded-xl text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/20 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+        Criar Usuário
+    </button>
+</app-drawer>

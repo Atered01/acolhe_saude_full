@@ -1,0 +1,78 @@
+<app-modal [open]="open" (fechar)="fechar.emit()" title="Encaminhar Paciente" maxWidth="md">
+  
+  <div class="mb-6">
+    <div class="text-sm font-medium text-slate-500 mb-1">Paciente a ser encaminhado</div>
+    <div class="font-semibold text-slate-900 text-lg">{{ patientName }}</div>
+  </div>
+
+  <div class="space-y-4">
+    <div class="relative">
+      <lucide-icon [img]="SearchIcon" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></lucide-icon>
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery"
+        placeholder="Buscar clínica ou especialidade..."
+        class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition"
+      >
+    </div>
+
+    <div class="space-y-3 max-h-[40vh] overflow-y-auto pr-2">
+      @for (clinic of filteredClinics; track clinic.idParceiro) {
+        <div 
+          (click)="selectClinic(clinic.idParceiro)"
+          [ngClass]="selectedClinic === clinic.idParceiro ? 'border-blue-600 bg-blue-50/50 ring-1 ring-blue-600' : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50'"
+          class="p-4 rounded-2xl border transition cursor-pointer"
+        >
+          <div class="flex justify-between items-start mb-2">
+            <div>
+              <h4 class="font-semibold text-slate-900">{{ clinic.nomeApresentacao }}</h4>
+              <div class="text-sm text-slate-500">{{ clinic.tipoParceiro }}</div>
+            </div>
+            
+            @if (selectedClinic === clinic.idParceiro) {
+              <lucide-icon [img]="CheckCircle2Icon" class="w-5 h-5 text-blue-600"></lucide-icon>
+            }
+          </div>
+          
+          <div class="flex items-center gap-4 mt-3">
+            <span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-semibold bg-emerald-100 text-emerald-700">
+              <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+              {{ clinic.leitosEnfermaria + clinic.leitosUti }} vagas livres
+            </span>
+            <span class="text-xs text-slate-500 flex items-center gap-1">
+              <lucide-icon [img]="MapPinIcon" class="w-3.5 h-3.5"></lucide-icon>
+              {{ clinic.enderecoAtendimento }}
+            </span>
+          </div>
+        </div>
+      }
+      
+      @if (filteredClinics.length === 0) {
+        <div class="text-center p-6 text-slate-500">
+          Nenhuma clínica com vagas encontrada no momento.
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="flex gap-3 mt-6 pt-6 border-t border-slate-100">
+    <button 
+      (click)="fechar.emit()"
+      class="px-6 py-3 rounded-xl font-semibold text-slate-600 hover:bg-slate-100 transition"
+    >
+      Cancelar
+    </button>
+    <button 
+      (click)="confirmForward()"
+      [disabled]="!selectedClinic || isEnviando"
+      class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+    >
+      @if (isEnviando) {
+        <lucide-icon [img]="Loader2Icon" class="w-4 h-4 mr-2 animate-spin"></lucide-icon>
+        A enviar...
+      } @else {
+        Confirmar Encaminhamento
+      }
+    </button>
+  </div>
+</app-modal>

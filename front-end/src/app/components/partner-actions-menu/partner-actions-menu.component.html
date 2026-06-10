@@ -1,0 +1,40 @@
+<div class="relative inline-block">
+
+    <!-- Botão de 3 pontinhos -->
+    <button (click)="toggleMenu()"
+        class="w-9 h-9 rounded-lg hover:bg-slate-100 inline-flex items-center justify-center transition cursor-pointer">
+        <lucide-icon [img]="MoreVerticalIcon" class="w-4 h-4 text-slate-500"></lucide-icon>
+    </button>
+
+    <!-- Menu Flutuante -->
+    @if (isOpen) {
+    <div
+        class="absolute right-0 mt-1 w-52 rounded-xl bg-white shadow-xl ring-1 ring-slate-200 py-1.5 z-30 animate-in fade-in zoom-in-95">
+
+        <!-- Item: Editar -->
+        <button (click)="onEditar()"
+            class="w-full flex items-center gap-2.5 px-3.5 py-2 text-sm font-medium text-left transition text-slate-700 hover:bg-slate-100 cursor-pointer">
+            <lucide-icon [img]="PencilIcon" class="w-4 h-4"></lucide-icon>
+            Editar
+        </button>
+
+        <!-- Item: Histórico -->
+        <button (click)="onVerHistorico()"
+            class="w-full flex items-center gap-2.5 px-3.5 py-2 text-sm font-medium text-left transition text-slate-700 hover:bg-slate-100 cursor-pointer">
+            <lucide-icon [img]="HistoryIcon" class="w-4 h-4"></lucide-icon>
+            Ver Histórico
+        </button>
+
+        <!-- Separador -->
+        <div class="border-t border-slate-100 my-1"></div>
+
+        <button (click)="onSuspender()"
+            class="w-full flex items-center gap-2.5 px-3.5 py-2 text-sm font-medium text-left transition text-red-600 hover:bg-red-50 cursor-pointer">
+            <lucide-icon [img]="BanIcon" class="w-4 h-4"></lucide-icon>
+            Suspender Parceiro
+        </button>
+
+    </div>
+    }
+
+</div>

@@ -1,0 +1,103 @@
+<div class="min-h-screen bg-slate-50 p-4 md:p-8">
+  <header class="mb-8 max-w-3xl mx-auto flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-slate-900">Resultado da Triagem</h1>
+    <div class="text-sm font-semibold text-slate-500">Paciente: {{ atendimento?.nomePaciente || 'Carregando...' }}</div>
+  </header>
+
+  <div class="max-w-3xl mx-auto space-y-6">
+
+    <!-- Card Principal Dinâmico -->
+    <div class="relative rounded-3xl p-[2px] bg-gradient-to-r shadow-2xl transition-all duration-700"
+      [ngClass]="getTheme()">
+      <div class="rounded-3xl bg-white p-8">
+        <div class="flex items-start gap-4">
+
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 transition-colors"
+            [ngClass]="getBadgeColor()">
+            @if (iaProcessando) {
+            <lucide-icon [img]="Loader2Icon" class="w-7 h-7 animate-spin"></lucide-icon>
+            } @else if (atendimento?.nivelRiscoIa === 'VERMELHO') {
+            <lucide-icon [img]="AlertCircleIcon" class="w-7 h-7"></lucide-icon>
+            } @else {
+            <lucide-icon [img]="AlertTriangleIcon" class="w-7 h-7"></lucide-icon>
+            }
+          </div>
+
+          <div class="flex-1">
+            <div
+              class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide transition-colors"
+              [ngClass]="getBadgeColor()">
+              @if (iaProcessando) {
+              <span class="w-2 h-2 bg-slate-500 rounded-full animate-pulse"></span>
+              Processamento IA
+              } @else {
+              <span class="w-2 h-2 rounded-full animate-pulse"
+                [ngClass]="atendimento?.nivelRiscoIa === 'VERMELHO' ? 'bg-red-500' : (atendimento?.nivelRiscoIa === 'AMARELO' ? 'bg-amber-500' : 'bg-emerald-500')"></span>
+              Risco {{ atendimento?.nivelRiscoIa }}
+              }
+            </div>
+
+            <h2 class="text-2xl font-bold text-slate-900 mt-3 transition-all">
+              {{ getTituloRisco() }}
+            </h2>
+            <p class="text-slate-600 mt-2 leading-relaxed">
+              {{ getMensagemRisco() }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Análise Preliminar -->
+    @if (!iaProcessando) {
+    <div class="bg-white rounded-2xl shadow-md p-6 animate-in fade-in slide-in-from-bottom-4">
+      <div class="flex items-center gap-2 mb-4">
+        <lucide-icon [img]="SparklesIcon" class="w-5 h-5 text-blue-600"></lucide-icon>
+        <h3 class="font-semibold text-slate-900">Sintomas Relatados e Análise</h3>
+      </div>
+      <p class="text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100">
+        "{{ atendimento?.relatoSintomas }}"
+      </p>
+
+      <div class="mt-6 pt-6 border-t border-slate-100">
+        <h4 class="text-sm font-semibold text-slate-900 mb-3">Diretrizes da Plataforma</h4>
+        <ul class="space-y-3 text-slate-700 text-sm">
+          <li class="flex items-start gap-3">
+            <lucide-icon [img]="CheckCircle2Icon" class="w-5 h-5 text-blue-500 shrink-0"></lucide-icon>
+            Contacte a clínica ou hospital de destino antes do envio do paciente.
+          </li>
+          <li class="flex items-start gap-3">
+            <lucide-icon [img]="CheckCircle2Icon" class="w-5 h-5 text-blue-500 shrink-0"></lucide-icon>
+            Mantenha o paciente monitorizado até a transferência.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Botões de Ação -->
+    <div class="grid sm:grid-cols-2 gap-4 animate-in fade-in slide-in-from-bottom-8">
+      <button (click)="modalEncaminharAberto = true" [disabled]="atendimento?.nivelRiscoIa === 'VERDE'"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-2xl shadow-md shadow-blue-600/20 inline-flex items-center justify-center gap-2 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+        <lucide-icon [img]="StethoscopeIcon" class="w-5 h-5"></lucide-icon>
+        Encaminhar para Clínica
+      </button>
+
+      <button (click)="drawerChatAberto = true"
+        class="bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 font-semibold py-4 rounded-2xl shadow-sm inline-flex items-center justify-center gap-2 transition cursor-pointer">
+        <lucide-icon [img]="PhoneIcon" class="w-5 h-5 text-emerald-600"></lucide-icon>
+        Falar com Médico
+      </button>
+    </div>
+    }
+
+  </div>
+</div>
+
+<app-doctor-chat-drawer [open]="drawerChatAberto" (fechar)="drawerChatAberto = false">
+</app-doctor-chat-drawer>
+
+<!-- Modal Real de Encaminhamento -->
+<app-forward-clinic-modal [open]="modalEncaminharAberto" [patientName]="atendimento?.nomePaciente || ''"
+  [idAtendimento]="atendimento?.idAtendimento || 0" (fechar)="modalEncaminharAberto = false"
+  (sucesso)="redirecionarAposEncaminhar()">
+</app-forward-clinic-modal>

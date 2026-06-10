@@ -1,0 +1,69 @@
+<app-modal 
+  [open]="open" 
+  title="Detalhes da Triagem" 
+  [subtitle]="t.patient" 
+  size="lg"
+  [hasFooter]="true"
+  (fechar)="onClose()"
+>
+  <div class="rounded-2xl bg-amber-50 border border-amber-200 p-4 flex items-start gap-3 mb-5">
+    <lucide-icon [img]="AlertTriangleIcon" class="w-5 h-5 text-amber-600 shrink-0 mt-0.5"></lucide-icon>
+    <div>
+      <div class="text-sm font-bold text-amber-700">Nível {{ t.level }} — Avaliação em até 6h</div>
+      <p class="text-sm text-amber-700/80 mt-0.5">Não é emergência imediata, mas requer atenção.</p>
+    </div>
+  </div>
+
+  <div class="space-y-5">
+    
+    <section>
+      <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Sintomas relatados</h4>
+      <div class="flex flex-wrap gap-2">
+        @for (s of sintomasMock; track s) {
+          <span class="px-3 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">
+            {{ s }}
+          </span>
+        }
+      </div>
+    </section>
+
+    <section>
+      <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 flex items-center gap-1.5">
+        <lucide-icon [img]="SparklesIcon" class="w-3.5 h-3.5 text-blue-600"></lucide-icon> Resumo da IA
+      </h4>
+      <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 rounded-xl p-4">
+        Quadro compatível com variação pressórica ou hipoglicemia em paciente idosa hipertensa.
+        Sem sinais focais neurológicos. Monitorar glicemia e pressão; reavaliar em 30 minutos.
+      </p>
+    </section>
+
+    <section>
+      <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Recomendação</h4>
+      <ul class="space-y-2">
+        @for (r of recomendacoesMock; track r) {
+          <li class="flex items-start gap-2 text-sm text-slate-700">
+            <lucide-icon [img]="CheckCircle2Icon" class="w-4 h-4 text-emerald-500 mt-0.5 shrink-0"></lucide-icon>
+            {{ r }}
+          </li>
+        }
+      </ul>
+    </section>
+  </div>
+
+  <button 
+    modal-footer 
+    (click)="onClose()" 
+    class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 transition cursor-pointer"
+  >
+    Fechar
+  </button>
+  
+  <button 
+    modal-footer 
+    (click)="onEncaminhar()" 
+    class="px-4 py-2 rounded-xl text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/20 transition cursor-pointer"
+  >
+    Encaminhar para Clínica
+  </button>
+
+</app-modal>
