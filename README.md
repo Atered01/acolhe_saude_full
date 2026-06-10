@@ -153,5 +153,3 @@ Projeto de Trabalho de Conclusão de Curso (TCC) — Análise e Desenvolvimento 
 | **Caio Tadeu Pereira Lima** | 243912024 | Desenvolvimento Frontend e UX/UI |
 
 ---
-
-*Transformando tecnologia em cuidado. Desenvolvido para Guarulhos, desenhado para o mundo.* 💙
